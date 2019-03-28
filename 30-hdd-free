@@ -1,0 +1,32 @@
+#!/bin/bash
+
+mountpoints=('/mnt/sdb1' '/')
+barWidth=50
+maxDiscUsage=90
+clear="\e[39m\e[0m"
+dim="\e[2m"
+barclear=""
+echo 
+
+for point in "${mountpoints[@]}"; do
+    line=$(df -hl "${point}")
+    usagePercent=$(echo "$line"|tail -n1|awk '{print $5;}'|sed 's/%//')
+    usedBarWidth=$((($usagePercent*$barWidth)/100))
+    barContent=""
+    color="\e[32m"
+    if [ "${usagePercent}" -ge "${maxDiscUsage}" ]; then
+        color="\e[31m"
+    fi
+    barContent="${color}"
+    for sep in $(seq 1 $usedBarWidth); do
+        barContent="${barContent}|"
+    done
+    barContent="${barContent}${clear}${dim}"
+    for sep in $(seq 1 $(($barWidth-$usedBarWidth))); do
+        barContent="${barContent}-"
+    done
+    bar="[${barContent}${clear}]"
+	echo "${line}" | awk  '{if ($1 != "Filesystem") printf("%-30s%+3s used out of %+5s\n", $1, $3, $2); }' | sed -e 's/^/  /'
+	echo -e "${bar}" | sed -e 's/^/  /'
+
+done

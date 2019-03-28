@@ -1,0 +1,19 @@
+#!/bin/bash
+sd=(sda sdb sdc sdd)
+out=""
+clear="\e[0m\e[39m"
+
+my_target_temp=45
+for i in ${!sd[@]}; do
+    temp=$(hddtemp -nq /dev/${sd[$i]} 2> /dev/null)
+    color="\e[42m"
+    if [ "$temp" -ge "${my_target_temp}" ]; then
+        color="\e[41m"
+    fi
+    out+="${sd[$i]} \e[30m $color $temp $clear ,"
+    c=i+1
+done
+out+="\n"
+echo -e "
+HDD Temps:"
+printf "$out" | column -c $c -ts $',' | sed -e 's/^/  /'
