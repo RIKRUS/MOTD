@@ -1,5 +1,5 @@
 #!/bin/bash
-sd=(sda sdb sdc sdd)
+sd=(sda sdb sdc sdd sde)
 out=""
 clear="\e[0m\e[39m"
 

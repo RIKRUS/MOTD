@@ -2,4 +2,4 @@
 
 echo "
 Flexget ACCEPTED:"
-column -t -s % /home/server/.flexget/accepted.log | tail -n 10
+tail -n 10 /home/server/.flexget/accepted.log | column -ts %
