@@ -4,7 +4,7 @@ This repository contains the my configs for MOTD forked from [yboetz](https://gi
 
 It just Messange Of The Day for linux ssh and terminal.
 
-#Requirements
+# Requirements
  * update-motd
    - Needed for work all scripts
  * figlet
