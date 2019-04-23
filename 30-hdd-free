@@ -9,7 +9,7 @@ barclear=""
 echo 
 
 for point in "${mountpoints[@]}"; do
-    line=$(df -hl "${point}")
+    line=$(df -h "${point}")
     usagePercent=$(echo "$line"|tail -n1|awk '{print $5;}'|sed 's/%//')
     usedBarWidth=$((($usagePercent*$barWidth)/100))
     barContent=""
