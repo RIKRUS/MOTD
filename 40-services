@@ -6,7 +6,7 @@ COLUMNS=3
 green="\e[1;32m"
 red="\e[1;31m"
 undim="\e[0m"
-services=( "smartd" "plexmediaserver" "deluge-web" "deluged" "smbd" "minecraft@gregtech")
+services=( "smartd" "plexmediaserver" "docker" "smdb")
 # sort services
 IFS=$'\n' services=($(sort <<<"${services[*]}"))
 unset IFS

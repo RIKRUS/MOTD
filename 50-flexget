@@ -2,4 +2,4 @@
 
 echo "
 Flexget ACCEPTED:"
-tail -n 10 /home/server/.flexget/accepted.log | column -ts %
+tail -n 5 /home/server/docker/flexget/config/accepted.log | column -ts %

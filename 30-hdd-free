@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mountpoints=('/mnt/sdb1' '/')
+mountpoints=('/mnt/sdb1' '/' '/mnt/backup/')
 barWidth=50
 maxDiscUsage=90
 clear="\e[39m\e[0m"
@@ -9,7 +9,7 @@ barclear=""
 echo 
 
 for point in "${mountpoints[@]}"; do
-    line=$(df -h "${point}")
+    line=$(df -hl "${point}")
     usagePercent=$(echo "$line"|tail -n1|awk '{print $5;}'|sed 's/%//')
     usedBarWidth=$((($usagePercent*$barWidth)/100))
     barContent=""
