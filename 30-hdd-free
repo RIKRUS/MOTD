@@ -6,8 +6,8 @@ maxDiscUsage=90
 clear="\e[39m\e[0m"
 dim="\e[2m"
 barclear=""
-echo 
-
+echo
+echo 'HDD free:'
 for point in "${mountpoints[@]}"; do
     line=$(df -hl "${point}")
     usagePercent=$(echo "$line"|tail -n1|awk '{print $5;}'|sed 's/%//')
