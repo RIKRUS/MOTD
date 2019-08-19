@@ -9,7 +9,7 @@ It just Messange Of The Day for linux ssh and terminal.
    - Needed for work all scripts
  * figlet
    - Needed for work displayname in module 10-display-name
- * hddtemp
+ * smartctl
    - Needed for showing temp in module 30-hdd-temp
  * docker
    - Needed for working module 60-docker
