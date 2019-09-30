@@ -1,12 +1,12 @@
 #!/bin/bash
-sd=(sda sdb sdc sdd sde sdf)
+sd=(sda)
 out=""
 COLUMNS=3
 clear="\e[0m\e[39m"
 
 my_target_temp=45
 for i in ${!sd[@]}; do
-    temp=$(smartctl -a /dev/${sd[$i]} | grep Temperature_Celsius	| awk '{print $10}' 2> /dev/null)
+    temp=$(smartctl -a /dev/${sd[$i]} | grep Temperature_Celsius | grep 194	| awk '{print $10}' 2> /dev/null)
     color="\e[42m"
     if [ "$temp" -ge "${my_target_temp}" ]; then
         color="\e[41m"
