@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export LANG='en_US.UTF-8'
 # set column width
 COLUMNS=2
 # colors
@@ -17,9 +18,9 @@ for i in "${!containers[@]}"; do
     IFS=" " read name status <<< ${containers[i]}
     # color green if service is active, else red
     if [[ "${status}" == "Up" ]]; then
-        out+="${name}:,${green}${status,,}${undim},"
+        out+="${name}:,${green}▲${undim},"
     else
-        out+="${name}:,${red}${status,,}${undim},"
+        out+="${name}:,${red}▼${undim},"
     fi
     # insert \n every $COLUMNS column
     if [ $((($i+1) % $COLUMNS)) -eq 0 ]; then
@@ -29,4 +30,4 @@ done
 out+="\n"
 
 printf "\nDocker status:\n"
-printf "$out" | column -ts $',' | sed -e 's/^/  /'
+printf "$out" | column -ts $',' | sed -e 's/^/ /'

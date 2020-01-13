@@ -1,23 +1,30 @@
 #!/bin/bash
-sd=(sda)
+disks=${disks:-()}
 out=""
+dim="\e[43m"
+white="\e[31m"
+label="\e[1;30m"
 COLUMNS=3
 clear="\e[0m\e[39m"
-
 my_target_temp=45
-for i in ${!sd[@]}; do
-    temp=$(smartctl -a /dev/${sd[$i]} | grep Temperature_Celsius | grep 194	| awk '{print $10}' 2> /dev/null)
+k=0
+
+for i in {a..z}; do
+    temp=$(smartctl -a /dev/sd${i} | grep Temperature_Celsius | grep 194     | awk '{print $10}' 2> /dev/null)
     color="\e[42m"
-    if [ "$temp" -ge "${my_target_temp}" ]; then
-        color="\e[41m"
+	((k++))
+	if [ -z "$temp" ]; then
+        out+=""
+    else 
+        if [ "$temp" -ge "${my_target_temp}" ]; then
+            color="\e[41m"
+        fi
+        out+="${dim}${white}${label} sd${i} \e[30m$color $temp $clear,"
+		if [ $(($k % $COLUMNS)) -eq 0 ]; then
+                    out+="\n"
+            fi
     fi
-    out+="${sd[$i]} \e[30m $color $temp $clear ,"
-    c=i+1
-    if [ $((($i+1) % $COLUMNS)) -eq 0 ]; then
-		out+="\n"
-	fi
 done
 out+="\n"
-echo -e "
-HDD Temps:"
-printf "$out" | column -c $c -ts $',' | sed -e 's/^/  /'
+echo -e "HDD Temps:"
+printf "$out" | column -c $k -ts $',' | sed -e 's/^/ /'

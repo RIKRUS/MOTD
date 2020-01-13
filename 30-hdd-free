@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mountpoints=('/mnt/sdb1' '/' '/mnt/backup/')
-barWidth=50
+mountpoints=('/dev/sdf1' '/dev/vg1/downloads' '/dev/sdb1')
+barWidth=34
 maxDiscUsage=90
 clear="\e[39m\e[0m"
 dim="\e[2m"
@@ -10,10 +10,11 @@ echo
 echo 'HDD free:'
 for point in "${mountpoints[@]}"; do
     line=$(df -hl "${point}")
+	label=$(lsblk -o label "${point}")
     usagePercent=$(echo "$line"|tail -n1|awk '{print $5;}'|sed 's/%//')
     usedBarWidth=$((($usagePercent*$barWidth)/100))
     barContent=""
-    color="\e[32m"
+    color="\e[33m"
     if [ "${usagePercent}" -ge "${maxDiscUsage}" ]; then
         color="\e[31m"
     fi
@@ -26,7 +27,8 @@ for point in "${mountpoints[@]}"; do
         barContent="${barContent}-"
     done
     bar="[${barContent}${clear}]"
-	echo "${line}" | awk  '{if ($1 != "Filesystem") printf("%-30s%+3s used out of %+5s\n", $1, $3, $2); }' | sed -e 's/^/  /'
-	echo -e "${bar}" | sed -e 's/^/  /'
+	echo "${label}" | awk '{if ($1 != "LABEL") printf("%-10s", $1); }'
+	echo "${line}" | awk  '{if ($1 != "Filesystem") printf("%+8s used out of %+5s\n", $3, $2); }'
+	echo -e "${bar}"
 
 done
