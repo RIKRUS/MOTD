@@ -2,6 +2,7 @@
 
 # get free memory
 IFS=" " read USED FREE TOTAL <<<$(free -htm | grep "Mem" | awk {'print $3,$4,$2'})
+ISF2=" " read USEDSW FREESW TOTALSW <<<$(free -htm | grep "Swap" | awk {'print $3,$4,$2'})
 # get processes
 PROCESS=`ps -eo user=|sort|uniq -c | awk '{ print $2 " " $1 }'`
 PROCESS_ALL=`echo "$PROCESS"| awk {'print $2'} | awk '{ SUM += $1} END { print SUM }'`
@@ -18,4 +19,5 @@ $W  Distro.: $W`cat /etc/*release | grep "PRETTY_NAME" | cut -d "=" -f 2- | sed 
 $W  Kernel.: $W`uname -sr`
 $W  Proc...: $W$G$PROCESS_ROOT$W (r), $G$PROCESS_USER$W (u) | $G$PROCESS_ALL$W (t)
 $W  CPU....:$W`cat /proc/cpuinfo | grep "name" | cut -d : -f2 | uniq | cut -f1 -d"@" | sed 's/(TM)//;s/(R)//;s/CPU//'`
-$W  Memory.: $G$USED$W used | $G$TOTAL$W in total$W"
+$W  Memory.: $G$USED$W used | $G$TOTAL$W in total$W
+$W  Swap...: $G$USEDSW$W used | $G$TOTALSW$W in total$W"
