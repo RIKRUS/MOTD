@@ -1,0 +1,19 @@
+#!/bin/bash
+export LANG='en_US.UTF-8'
+
+echo ""
+echo "Active OVPN clienst:"
+mapfile -t common < <(sudo tail -n +4 /var/log/openvpn/openvpn-status.log | ssed -R 's/\s+/_/g ; s/,/ /g' | grep ^CLIENT_LIST| sort | awk '{print $2}')
+mapfile -t virtual < <(sudo tail -n +4 /var/log/openvpn/openvpn-status.log | ssed -R 's/\s+/_/g ; s/,/ /g' | grep ^CLIENT_LIST| sort | awk '{print $4}')
+mapfile -t sent < <(sudo tail -n +4 /var/log/openvpn/openvpn-status.log | ssed -R 's/\s+/_/g ; s/,/ /g' | grep ^CLIENT_LIST| sort | awk '{print $6}')
+mapfile -t received < <(sudo tail -n +4 /var/log/openvpn/openvpn-status.log | ssed -R 's/\s+/_/g ; s/,/ /g' | grep ^CLIENT_LIST| sort | awk '{print $5}')
+mapfile -t connected < <(sudo tail -n +4 /var/log/openvpn/openvpn-status.log | ssed -R 's/\s+/_/g ; s/,/ /g; s/(Mon_|Tue_|Wed_|Sat_|Thu_|Sat_|Sun_)//g ; s/:[0-9][0-9]_/_/g' | grep ^CLIENT_LIST| sort | awk '{print $7}')
+out2="Common Name,Virtual Address,Connected Since,▼,▲\n"
+for k in "${!common[@]}"; do
+    if [ "${common[k]}" != "UNDEF" ]; then
+        rec=$((${received[k]}/1024/1024))Mb
+        sen=$((${sent[k]}/1024/1024))Mb
+        out2+=${common[k]},${virtual[k]},${connected[k]},${rec},${sen}"\n"
+    fi
+done
+printf "$out2" | column -ts ',' | sed 's/_/ /g'

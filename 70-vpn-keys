@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CONFIG_DIR=/etc/openvpn/ca
+echo ""
+echo "List of OVPN keys:"
+           mapfile -t keys < <(sudo cat ${CONFIG_DIR}/pki/index.txt |grep ^V | grep -v server | grep -oh /CN=[[:alnum:]]* | sed -e 's/\/CN=//g')
+out="Name, Expires\n"
+for i in "${!keys[@]}"; do
+    IFS=" " read name <<< ${keys[i]}
+    out+="${name},"
+    out+=$(sudo cat ${CONFIG_DIR}/pki/issued/${name}.crt | grep ^'            Not After :' | sed -e 's/            Not After :// ; s/ GMT//g ; s/:[0-9][0-9] / /')
+    out+="\n"
+done
+printf "$out" | column -ts $','
+echo ""

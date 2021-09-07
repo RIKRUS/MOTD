@@ -15,6 +15,9 @@ It just Messange Of The Day for linux ssh and terminal.
    - Needed for working module 60-docker
  * lxd
    - Needed for working module 60-lxd
+ * ssed
+   - Needed for working module 70-vpn-active
+
 
 # Screenshot
 ![screen](screenshot/screen.png)
@@ -30,3 +33,9 @@ sudo chown root:root *
 sudo cp * /etc/update-motd.d/
 sudo update-motd
 ```
+
+# Update 08.09.2021
+* Added module for track Openvpn keys (i use easyrsa for generating keys) and active connections 
+
+#P.S.
+*In folder with openvpn config (`/etc/openvpn/`) locating directory with Certifiration Autority. Some files reading directly from CA (`/etc/openvpn/ca/pki/`)
