@@ -3,7 +3,7 @@
 CONFIG_DIR=/etc/openvpn/ca
 echo ""
 echo "List of OVPN keys:"
-           mapfile -t keys < <(sudo cat ${CONFIG_DIR}/pki/index.txt |grep ^V | grep -v server | grep -oh /CN=[[:alnum:]]* | sed -e 's/\/CN=//g')
+           mapfile -t keys < <(sudo cat ${CONFIG_DIR}/pki/index.txt | sed -ne 's/^V.*CN=\(\W\)*/\1/p' | grep -v server)
 out="Name, Expires\n"
 for i in "${!keys[@]}"; do
     IFS=" " read name <<< ${keys[i]}

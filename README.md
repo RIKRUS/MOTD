@@ -37,5 +37,5 @@ sudo update-motd
 # Update 08.09.2021
 * Added module for track Openvpn keys (i use easyrsa for generating keys) and active connections 
 
-#P.S.
-*In folder with openvpn config (`/etc/openvpn/`) locating directory with Certifiration Autority. Some files reading directly from CA (`/etc/openvpn/ca/pki/`)
+# P.S.
+* In folder with openvpn config (`/etc/openvpn/`) locating directory with Certifiration Autority. Some files reading directly from CA (`/etc/openvpn/ca/pki/`)
